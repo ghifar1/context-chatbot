@@ -1,6 +1,6 @@
 {
   "name": "context-chatbot",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Context module for bot chat",
   "type": "module",
   "main": "index.js",
