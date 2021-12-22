@@ -22,8 +22,8 @@ or register from array.
 context.registerArrayContext([
     {
         state: 'welcome',
-        callback: ()=>{
-            console.log('welcome')
+        callback: (id)=>{
+            console.log('welcome' + id)
         }
     }
 ])
