@@ -3,6 +3,7 @@ class Context {
     stateArray;
     constructor() {
         this.contextArray = [];
+        this.stateArray = [];
     }
     registerArrayContext(arr) {
         this.contextArray = [...this.contextArray, ...arr];

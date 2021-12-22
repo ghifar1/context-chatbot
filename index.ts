@@ -14,6 +14,7 @@ class Context {
 
 	constructor() {
 		this.contextArray = []
+		this.stateArray = []
 	}
 
 	registerArrayContext(arr: Array<ContextObject>) {
