@@ -1,9 +1,18 @@
 class Context {
     contextArray;
     stateArray;
+    middleware;
+    defaultState;
     constructor() {
         this.contextArray = [];
         this.stateArray = [];
+        this.middleware = (id, payload, next) => {
+            return next();
+        };
+        this.defaultState = 'base';
+    }
+    setDefaultState(state) {
+        this.defaultState = state;
     }
     registerArrayContext(arr) {
         this.contextArray = [...this.contextArray, ...arr];
@@ -20,14 +29,24 @@ class Context {
         this.stateArray[index].state = state;
         return;
     }
-    Context(id) {
-        let found = this.stateArray.find(state => state.id == id);
-        let context = this.contextArray.find(context => context.state == found.state);
+    setMiddleware(midFunc) {
+        this.middleware = midFunc;
+    }
+    Context(id, payload) {
         try {
-            return context.callback(found.id);
+            return this.middleware(id, payload, () => {
+                let found = this.stateArray.find(state => state.id == id);
+                if (typeof found === "undefined") {
+                    this.setState(id, this.defaultState);
+                    found = this.stateArray.find(state => state.id == id);
+                }
+                let context = this.contextArray.find(context => context.state == found.state);
+                return context.callback(found.id, payload);
+            });
         }
         catch (e) {
-            throw new Error("Context not found");
+            console.error(e);
+            // throw new Error("Context not found")
         }
     }
 }

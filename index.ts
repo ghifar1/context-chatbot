@@ -1,8 +1,10 @@
 interface ContextObject {
 	state: string
-	callback: (id: string)=>{
+	callback: (id: string, payload: any) => {}
+}
 
-	}
+interface middleware {
+	(id: string, payload: any, next: any): void
 }
 
 interface StateObject {
@@ -13,17 +15,27 @@ interface StateObject {
 class Context {
 	private contextArray: Array<ContextObject>
 	private stateArray: Array<StateObject>
+	private middleware: middleware
+	private defaultState: string
 
 	constructor() {
 		this.contextArray = []
 		this.stateArray = []
+		this.middleware = (id: string, payload: any, next: any) => {
+			return next()
+		}
+		this.defaultState = 'base'
+	}
+
+	setDefaultState(state: string) {
+		this.defaultState = state
 	}
 
 	registerArrayContext(arr: Array<ContextObject>) {
 		this.contextArray = [...this.contextArray, ...arr]
 	}
 
-	registerContext(state: string, callback: any) {
+	registerContext(state: string, callback: (id: string, payload: any) => {}) {
 		this.contextArray.push({ state: state, callback: callback })
 	}
 
@@ -37,13 +49,27 @@ class Context {
 		return
 	}
 
-	Context(id: string) {
-		let found = this.stateArray.find(state => state.id == id)
-		let context = this.contextArray.find(context => context.state == found.state)
+	setMiddleware(midFunc: middleware) {
+		this.middleware = midFunc
+	}
+
+	Context(id: string, payload: any) {
+
 		try {
-			return context.callback(found.id)
+			return this.middleware(id, payload, () => {
+
+				let found = this.stateArray.find(state => state.id == id)
+				if (typeof found === "undefined") {
+					this.setState(id, this.defaultState)
+					found = this.stateArray.find(state => state.id == id)
+				}
+				let context = this.contextArray.find(context => context.state == found.state)
+
+				return context.callback(found.id, payload)
+			})
 		} catch (e) {
-			throw new Error("Context not found")
+			console.error(e)
+			// throw new Error("Context not found")
 		}
 	}
 }
