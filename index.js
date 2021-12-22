@@ -24,7 +24,7 @@ class Context {
         let found = this.stateArray.find(state => state.id == id);
         let context = this.contextArray.find(context => context.state == found.state);
         try {
-            return context.callback();
+            return context.callback(found.id);
         }
         catch (e) {
             throw new Error("Context not found");
