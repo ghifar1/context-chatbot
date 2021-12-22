@@ -8,6 +8,9 @@
     "test": "node test/app.js",
     "build": "tsc -p tsconfig.json"
   },
+  "repository": {
+    "url": "https://github.com/ghifar1/context-chatbot"
+  },
   "author": "ghifari",
   "license": "MIT",
   "devDependencies": {
