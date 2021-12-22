@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "./lib",
+        "target": "ES5",
+        "module": "ES2015",
+        "allowJs": true,
+    },
+    "exclude": [
+        "./test/**/*",
+        "./node_modules/**/*",
+        "./lib/**/*" // This is what fixed it!
+    ]
+}
