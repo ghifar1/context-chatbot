@@ -89,7 +89,7 @@ Ctx.setMiddleware((id, payload, next) => {
 ## API
 ----------
 ----------
-### **`context.registerContext(state, callback)`**
+### **`Ctx.registerContext(state, callback)`**
 ----------
 Create a context with named state
 
@@ -97,9 +97,9 @@ Create a context with named state
 - `callback: Function`
   - `id: string`
   - `payload: any`
-  - `timeOut: optional ` setTimeOut function for context with timer
+  - `timeOut: optional ` setTimeOut function for Ctx with timer
 ----------
-### **`context.registerArrayContext(arr)`**
+### **`Ctx.registerArrayContext(arr)`**
 ----------
 Create a context from array of object
 
@@ -111,7 +111,7 @@ Create a context from array of object
     - `timeOut: optional ` setTimeOut function for context with timer
 
 ----------
-### **`context.setState(id, state)`**
+### **`Ctx.setState(id, state)`**
 ----------
 change the state of an id
 
@@ -121,7 +121,7 @@ change the state of an id
 - `backTo: string (Optional)` go to target state if timer is timeout
 
 ----------
-### **`context.Context(id, payload)`**
+### **`Ctx.Context(id, payload)`**
 ----------
 determine context of an id (if state id not found, 'base' status will be added automatically. Make sure to add 'base' context first, but you can change the default state, check API below)
 
@@ -129,13 +129,13 @@ determine context of an id (if state id not found, 'base' status will be added a
 - `state: any`
 
 ----------
-### **`context.setDefaultState(state)`**
+### **`Ctx.setDefaultState(state)`**
 ----------
 set default state if state of id not found
 - `state: string`
 
 ----------
-### **`context.setMiddleware(midFunc)`**
+### **`Ctx.setMiddleware(midFunc)`**
 ----------
 set middleware before enter the context
 - `midFunc: Function`
