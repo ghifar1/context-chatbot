@@ -1,40 +1,34 @@
-import { default as context } from "./index.js";
+import { Ctx } from "./index.js";
 
-context.setMiddleware((id, payload, next)=>{
-    
-    if(id == "6285101010101")
-    {
-        console.log("benar")
-        context.setState('6285101010101', 'welcome')
-    }
-    next()
-})
+Ctx.setMiddleware((id, payload, next) => {
+	// if(id == "6285101010101")
+	// {
+	//     console.log("benar")
+	//     Ctx.setState('6285101010101', 'welcome')
+	// }
+	
+	next();
+});
 
-context.setDefaultState('base')
+Ctx.setDefaultState("base");
 
-context.registerContext('base', (id, payload)=>{
-    console.log('hello ' + id)
-    console.log(payload)
-    return "wow"
-})
+Ctx.registerContext("base", (id, payload) => {
+	console.log("hello " + id);
+	console.log(payload);
 
+	Ctx.setState(id, "welcome", 2000, "base");
+	// Ctx.Context(id, payload)
+});
 
+Ctx.registerArrayContext([
+	{
+		state: "welcome",
+		callback: (id, payload, timeOut) => {
+			console.log("welcome " + id + " (5 seconds)");
+			clearTimeout(timeOut);
+			return "wow";
+		},
+	},
+]);
 
-context.registerArrayContext([
-    {
-        state: 'welcome',
-        callback: (id, payload) =>{
-            console.log('welcome ' +  id)
-            console.log(payload)
-            return "wow"
-        }
-    }
-])
-
-// context.setState('6285101010101', 'base')
-
-context.Context('6285101010101', 'aowieeoeoe')
-
-context.setState('6285101010101', 'welcome')
-
-context.Context('6285101010101', 'aowieeoeoe')
+Ctx.Context("6285101010101", "aowieeoeoe");

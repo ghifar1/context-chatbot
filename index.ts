@@ -1,6 +1,6 @@
 interface ContextObject {
 	state: string
-	callback: (id: string, payload: any) => {}
+	callback: (id: string, payload: any, timeOut?: Function) => {}
 }
 
 interface middleware {
@@ -10,6 +10,7 @@ interface middleware {
 interface StateObject {
 	id: string
 	state: string
+	timeOut?: any
 }
 
 class Context {
@@ -35,17 +36,22 @@ class Context {
 		this.contextArray = [...this.contextArray, ...arr]
 	}
 
-	registerContext(state: string, callback: (id: string, payload: any) => {}) {
+	registerContext(state: string, callback: (id: string, payload: any, timeOut?: Function) => {}) {
 		this.contextArray.push({ state: state, callback: callback })
 	}
 
-	setState(id: string, state: string) {
+	setState(id: string, state: string, timer?: number, backTo?: string) {
 		let index = this.stateArray.findIndex(state => state.id == id)
 		if (index < 0) {
 			this.stateArray.push({ id: id, state: state })
-			return
+			return this.setState(id, state, timer, backTo)
 		}
 		this.stateArray[index].state = state
+		if (timer) {
+			this.stateArray[index].timeOut = setTimeout(() => {
+				this.setState(id, backTo)
+			}, timer)
+		}
 		return
 	}
 
@@ -65,6 +71,9 @@ class Context {
 				}
 				let context = this.contextArray.find(context => context.state == found.state)
 
+				if (typeof found.timeOut !== "undefined") {
+					return context.callback(found.id, payload, found.timeOut)
+				}
 				return context.callback(found.id, payload)
 			})
 		} catch (e) {
@@ -74,5 +83,7 @@ class Context {
 	}
 }
 
-let context = new Context()
-export default context
+const Ctx = new Context()
+export {
+	Ctx
+}

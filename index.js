@@ -20,13 +20,18 @@ class Context {
     registerContext(state, callback) {
         this.contextArray.push({ state: state, callback: callback });
     }
-    setState(id, state) {
+    setState(id, state, timer, backTo) {
         let index = this.stateArray.findIndex(state => state.id == id);
         if (index < 0) {
             this.stateArray.push({ id: id, state: state });
-            return;
+            return this.setState(id, state, timer, backTo);
         }
         this.stateArray[index].state = state;
+        if (timer) {
+            this.stateArray[index].timeOut = setTimeout(() => {
+                this.setState(id, backTo);
+            }, timer);
+        }
         return;
     }
     setMiddleware(midFunc) {
@@ -41,6 +46,9 @@ class Context {
                     found = this.stateArray.find(state => state.id == id);
                 }
                 let context = this.contextArray.find(context => context.state == found.state);
+                if (typeof found.timeOut !== "undefined") {
+                    return context.callback(found.id, payload, found.timeOut);
+                }
                 return context.callback(found.id, payload);
             });
         }
@@ -50,5 +58,5 @@ class Context {
         }
     }
 }
-let context = new Context();
-export default context;
+const Ctx = new Context();
+export { Ctx };
