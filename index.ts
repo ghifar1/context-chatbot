@@ -77,7 +77,9 @@ class Context {
 				return context.callback(found.id, payload)
 			})
 		} catch (e) {
-			console.error(e)
+			// console.error(e)
+			throw new Error("Context not found");
+			
 			// throw new Error("Context not found")
 		}
 	}
