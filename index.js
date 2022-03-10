@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Ctx = void 0;
 class Context {
     contextArray;
     stateArray;
@@ -60,4 +63,4 @@ class Context {
     }
 }
 const Ctx = new Context();
-export { Ctx };
+exports.Ctx = Ctx;

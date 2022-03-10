@@ -1,4 +1,4 @@
-import { Ctx } from "./index.js";
+const Ctx = require("./index.js").Ctx;
 
 Ctx.setMiddleware((id, payload, next) => {
 	// if(id == "6285101010101")
@@ -6,7 +6,7 @@ Ctx.setMiddleware((id, payload, next) => {
 	//     console.log("benar")
 	//     Ctx.setState('6285101010101', 'welcome')
 	// }
-	
+
 	next();
 });
 
